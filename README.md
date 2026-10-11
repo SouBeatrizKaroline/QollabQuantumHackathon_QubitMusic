@@ -1,18 +1,42 @@
-# QubitMusic
+# QubitMusic — Adaptive Instrumental Soundtracks
 
-### Adaptive instrumental soundtracks with quantum + classical computing
+### What if a soundtrack could start with your brief—and a quantum experiment?
+
+This effort is supported by Qollab & IonQ
+
+**Team:** QuantGirls  
+**Hackathon:** Qollab × IonQ Global Hackathon  
+**Theme:** Quantum Impact
+
+| Team member | Portfolio or professional profile |
+| --- | --- |
+| **Beatriz Karoline Cordeiro da Silva** | [Portfolio](https://soubeatrizkaroline.vercel.app/) |
+| **Daiane Fonseca** | [LinkedIn](https://www.linkedin.com/in/daiane-fonseca-552655285) |
+| **Sonia Janara Silva Barros** | [Portfolio](https://jhay.goskip.app/) |
+
+**[Explore the source code](https://github.com/SouBeatrizKaroline/QollabQuantumHackathon_QubitMusic)** · **[Qollab setup](docs/QOLLAB.md)** · **[Architecture](docs/ARCHITECTURE.md)** · **[References and attribution](#references-and-external-attribution)**
 
 **Turn a duration and energy brief into a short instrumental cue. Generate, listen, compare and export—all in an interactive studio.**
 
-Built for the Qollab Quantum Hackathon's **Quantum Impact** theme: solving real-world problems with quantum + classical computing.
+## What is QubitMusic?
+
+**QubitMusic is an interactive studio for generating short instrumental cues adapted to a duration and energy brief.** It is designed for educators, small video creators and indie game developers.
+
+The central workflow is:
+
+**Describe → generate → listen → compare → export.**
+
+A quantum optimization model chooses whether each of six musical sections should be gentle or energetic. Classical code turns that arrangement into procedural lead notes, bass and pads. Users can hear the result, compare it with an exact classical arrangement and export audio for another editor or game engine.
+
+The project explores the hackathon's **Quantum Impact** theme through a concrete task: making short soundtrack creation more accessible. This intended benefit still requires user evaluation.
 
 [Português do Brasil](docs/README.pt-BR.md) · [Português de Portugal](docs/README.pt-PT.md) · [Español](docs/README.es.md)
 
-**Quick links:** [Get started](#quick-start) · [Quantum model](#the-quantum-model) · [Qollab](#run-on-qollab) · [Vercel](#deploy-on-vercel) · [Validation](#validation-and-project-status) · [Troubleshooting](#troubleshooting)
+**Quick links:** [Get started](#how-to-run-locally) · [Quantum model](#how-does-the-quantum-part-work) · [Qollab](#run-on-qollab) · [Vercel](#deploy-on-vercel) · [Validation](#validation-and-project-status) · [Troubleshooting](#troubleshooting)
 
 > **Prototype status:** the browser studio and local Qiskit implementation have been tested. Execution and publication inside Qollab, remote IonQ execution and the public Vercel deployment still require verification. No quantum advantage or measured user benefit is claimed.
 
-## Why this project exists
+## The problem and why it matters
 
 A teacher needs a gentle cue for a 24-second lesson introduction. A small creator needs background audio that fits a 30-second story. An indie developer needs a short, energetic game cue.
 
@@ -21,6 +45,12 @@ Finding an appropriate recording, checking its usage terms and editing it to the
 The intended impact is **making soundtrack creation more accessible to people with limited time, tools or music-production experience**. This is a proposed benefit, not a result established through user studies.
 
 Quantum computing participates in selecting a section arrangement. Classical computing handles the brief, circuit tuning, result evaluation, note composition and audio generation.
+
+## Our contribution
+
+The contribution is the soundtrack-specific objective, hybrid optimization-to-audio pipeline, multilingual studio and inspectable classical comparison. The project does not claim to have invented QAOA, quantum circuits or procedural synthesis.
+
+For creators, the prototype provides a direct route from a few settings to a short audio file. For educators, it makes a hybrid quantum/classical workflow tangible. For partners and investors, the next proposed step is a creator pilot measuring time to usable audio, brief fit and perceived control. Commercial traction, revenue, market demand and measured user benefit have not been established.
 
 ## Features
 
@@ -42,7 +72,7 @@ Quantum computing participates in selecting a section arrangement. Classical com
 
 This version produces **short instrumental cues**. It does not generate lyrics, vocals, full-length songs or audio from a free-text prompt. It synthesizes lead, bass and pad voices rather than using a trained generative music model.
 
-## Quick start
+## How to run locally
 
 ### Requirements
 
@@ -61,7 +91,7 @@ npm start
 
 Open **http://127.0.0.1:4173**. The preview starts in English.
 
-### Generate your first cue
+### How to use the studio
 
 1. Choose a use-case preset.
 2. Adjust duration, energy, palette, key and variation seed.
@@ -99,19 +129,6 @@ The browser engine implements the same ideal circuit model for preview and cross
 
 ## How the hybrid workflow works
 
-```mermaid
-flowchart LR
-    A[Duration and energy brief] --> B[Classical cost formulation]
-    B --> C[Classical parameter search]
-    C --> D[Six-qubit QAOA and measurements]
-    D --> E[Best observed arrangement]
-    E --> F[Classical music synthesis]
-    F --> G[Listen and export]
-    B --> H[Exact classical reference]
-    H --> I[Compare cost and audio]
-    E --> I
-```
-
 1. Divide the requested duration into **six equal sections**.
 2. Give each section a binary choice: gentle phrase (`0`) or energetic phrase (`1`). This produces **64 possible arrangements**.
 3. Formulate the cost from target energy, transition smoothness, overall energy budget and endpoint preference.
@@ -122,7 +139,7 @@ flowchart LR
 
 The quantum stage chooses **section intensity**, not every note. Duration, timbre, key and note variation are classical controls. In the current optimizer, energy determines the arrangement objective.
 
-## The quantum model
+## How does the quantum part work?
 
 ### Objective
 
@@ -159,7 +176,7 @@ With `x_i = (1 - Z_i) / 2`, the quadratic objective becomes a diagonal Ising Ham
   → measurement, 256 shots
 ```
 
-Classical tuning evaluates 12 gamma values and 10 beta values and chooses the lowest ideal expected cost. This is **p = 1 QAOA**.
+Classical tuning evaluates 12 gamma values and 10 beta values and chooses the lowest ideal expected cost. This is **p = 1 QAOA**, the Quantum Approximate Optimization Algorithm introduced by Farhi, Goldstone and Gutmann. The project adapts that established algorithm to its six-section arrangement objective. [Original QAOA paper](https://arxiv.org/abs/1411.4028).
 
 Qiskit displays the highest-index bit first. Section `i` uses `(state >> i) & 1`, so the rightmost displayed bit corresponds to section 0.
 
@@ -353,8 +370,66 @@ Report bugs and propose translated wording or creator workflows through [GitHub 
 
 For model changes, explain the objective and compare with the exact classical baseline. Keep JavaScript/Qiskit probabilities consistent. For interface changes, update all four dictionaries. Run relevant checks and the static build, and distinguish local validation from platform execution.
 
-## License and credits
+## Credits and development transparency
+
+| Contributor, tool or source | Recorded use |
+| --- | --- |
+| **QuantGirls** | Project presentation and integration of the short-cue workflow and hybrid demonstration. |
+| **AI assistance in the initial implementation** | The existing repository records AI-assisted development during the 11 October 2026 build window. Individual tools and their initial contributions are not named in the current disclosure and require team confirmation. |
+| **OpenAI Codex** | Review and revision of this README, including the team, support attribution and external references. |
+| **QAOA research** | Established algorithm underlying the arrangement optimizer; credited below. |
+| **Qiskit** | Circuit construction, ideal-state calculations and selected-backend execution. |
+| **JavaScript and Web Audio** | Classical studio controls, procedural composition and browser playback. |
+| **Node.js** | Local preview, static build, packaging and JavaScript checks. |
+| **Qollab and Vercel** | Intended quantum runtime and browser hosting paths, respectively; publication status is tracked above. |
+
+The existing build disclosure states that no pre-existing application implementation or commercial music assets were imported. The source does not bundle third-party recordings or samples.
+
+References credit the scientific foundations and software used; they do not establish that a specific tutorial's code was copied. If additional code, circuit designs, written explanations, music, templates or visual assets were copied or adapted, disclose the source, author, affected files, form of reuse and applicable license. Confirm the exact AI tools and contribution chronology before the final hackathon disclosure.
+
+## References and external attribution
+
+### Scientific foundation
+
+1. **Farhi, E.; Goldstone, J.; Gutmann, S. (2014).** *A Quantum Approximate Optimization Algorithm*. [arXiv:1411.4028](https://arxiv.org/abs/1411.4028). Foundation for the QAOA cost/mixer circuit. The soundtrack objective and its weights are project-specific design choices, not results established by this paper.
+
+### Software and audio references
+
+- **Qiskit:** [official documentation](https://quantum.cloud.ibm.com/docs/). Quantum circuits, statevector calculations and execution APIs. The dependency range is recorded in [requirements.txt](requirements.txt).
+- **Web Audio API:** [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API). Browser audio playback and audio-graph controls; the project generates its own PCM samples in [lib/music.js](lib/music.js).
+- **Node.js:** [official documentation](https://nodejs.org/docs/latest/api/). Preview/build tooling and test runner. Commands are defined in [package.json](package.json).
+- **Vercel:** [build configuration](https://vercel.com/docs/builds/configure-a-build). Static hosting path; see [vercel.json](vercel.json) and [deployment guide](docs/VERCEL.md).
+
+### Qollab and hackathon references
+
+- [JS/Qiskit projects](https://qollab.xyz/learn/docs/js-qiskit-projects).
+- [Runtime environment](https://qollab.xyz/learn/docs/runtime-environment).
+- [Compute backends](https://qollab.xyz/learn/docs/compute-backends).
+- [Publishing projects](https://qollab.xyz/learn/docs/publish).
+- [Hackathon process and FAQ](https://qollab.xyz/programs/hackathon/how-it-works).
+- [Hackathon terms](https://qollab.xyz/programs/hackathon/terms).
+
+Consult the current official platform instructions when publishing. References do not establish a successful platform run, an endorsement or a completed submission.
+
+## Documentation and reproducibility
+
+- [Architecture and source responsibilities](docs/ARCHITECTURE.md).
+- [Qollab setup and verification checklist](docs/QOLLAB.md).
+- [Vercel deployment guide](docs/VERCEL.md).
+- [Validation record](docs/VALIDATION.md).
+- [Project-page draft](docs/PROJECT_PAGE.md).
+- [Demo walkthrough](docs/DEMO.md).
+- [Português — Brasil](docs/README.pt-BR.md).
+- [Português — Portugal](docs/README.pt-PT.md).
+- [Español](docs/README.es.md).
+
+## License and support
 
 Source is released under the [MIT License](LICENSE). No third-party recordings or samples are bundled. This project imposes no additional use restrictions on exported audio, while making no guarantee of melody uniqueness.
 
 QubitMusic is an independent hackathon prototype using [Qiskit](https://www.ibm.com/quantum/qiskit), Qollab's documented runtime, JavaScript and Web Audio. Platform references do not imply endorsement or verified hardware execution.
+
+
+**Created by QuantGirls: Beatriz Karoline Cordeiro da Silva, Daiane Fonseca and Sonia Janara Silva Barros.**
+
+This effort is supported by Qollab & IonQ
