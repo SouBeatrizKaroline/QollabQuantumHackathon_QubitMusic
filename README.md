@@ -47,6 +47,8 @@ These terms model energy fit, smoother section changes, an overall energy budget
 
 ## Run and publish on Qollab
 
+To publish the standalone browser studio on Vercel, see [Vercel setup](docs/VERCEL.md). The repository includes `vercel.json` and `npm run build`, producing a static site in `dist/`. No API keys or environment variables are needed. The Vercel version uses the clearly labelled browser simulation.
+
 See [Qollab setup](docs/QOLLAB.md). Upload the root `index.html`, `main.css`, `main.js`, `requirements.txt`, `LICENSE`, and the `lib/` and `quantum/` folders, preserving paths. `npm run package:qollab` prepares this set under `artifacts/qollab/`.
 
 Qollab injects `backend`; Python is invoked through `callPromising`. The project submits **one backend job per run**, compatible with IonQ's limit. After generating once, use Qollab **Stop → Run** to generate a new brief. A failed submission also requires a new run. The variation seed controls musical synthesis, not IonQ shot reproducibility. Start with the free built-in simulator, then verify the free IonQ simulator. Real hardware is optional and consumes credits.
